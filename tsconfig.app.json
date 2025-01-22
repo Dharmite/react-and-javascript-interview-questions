@@ -8,10 +8,9 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    "noEmit": false,
     "jsx": "react-jsx",
 
     /* Linting */
@@ -19,7 +18,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    "rootDir": "./src", // Root directory for .ts files
+    "outDir": "./dist", // Output directory for .js files
+    "noImplicitAny": false
   },
-  "include": ["src"]
+  "include": ["src/**/*"], // Include all files in the src folder
+  "exclude": ["node_modules", "dist"] // Exclude node_modules and output folder
 }

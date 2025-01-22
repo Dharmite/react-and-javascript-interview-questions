@@ -608,36 +608,473 @@ class MyComponent extends React.Component {
  *
  * @public
  */
-var MyDictionary = /** @class */ (function () {
-    function MyDictionary(words, wildcard) {
-        if (wildcard === void 0) { wildcard = "*"; }
+/* class MyDictionary {
+    dictionary: Set<string>;
+    wildcard: string;
+
+    constructor(words: string[], wildcard: string = "*") {
         this.dictionary = new Set(words);
         this.wildcard = wildcard;
-        this.regexDictionary = new Set();
-        // Precompute regex patterns for wildcard words
-        for (var _i = 0, words_1 = words; _i < words_1.length; _i++) {
-            var word = words_1[_i];
-            if (word.includes(this.wildcard)) {
-                var regexTemplate = word.replace(new RegExp("\\".concat(this.wildcard), 'g'), ".");
-                var regex = new RegExp("^".concat(regexTemplate, "$"));
-                this.regexDictionary.add(regex);
-            }
-        }
+
     }
-    MyDictionary.prototype.isInDict = function (word) {
-        if (this.dictionary.has(word)) {
-            return true;
-        }
-        for (var _i = 0, _a = this.regexDictionary; _i < _a.length; _i++) {
-            var regex = _a[_i];
-            if (regex.test(word)) {
-                return true;
+
+    matchWords(word: string): boolean {
+        if(word.startsWith(this.wildcard)) {
+            for(const dictWord of this.dictionary) {
+                if(dictWord.endsWith(word.slice(1))) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
-    };
-    return MyDictionary;
-}());
-var myDict = new MyDictionary(["cat", "car", "bar"]);
+
+        if(word.endsWith(this.wildcard)) {
+            for(const dictWord of this.dictionary) {
+                if(dictWord.startsWith(word.slice(0, word.length - 1))) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return true
+    }
+
+    matchWords2(word: string): boolean {
+        const regexTemplete = word.replace(this.wildcard, "."); // Replace wildcard with regex wildcard
+        const regex = new RegExp(`^${regexTemplete}$`); // Create regex pattern to match the word exactly with the wildcard replaced by any character
+        // Check if any word in the dictionary matches the regex pattern
+        // This regex pattern will match any word that has the same length as the input word and matches the pattern with the wildcard replaced by any character
+        // example: word = "c.t", regex pattern = "^c.t$", will match "cat", "cot", "cut", etc.
+        return regex.test(word);
+    }
+
+    isInDict(word: string): boolean {
+        if(word.includes(this.wildcard)) {
+            return this.matchWords(word);
+        }
+        return this.dictionary.has(word);
+    }
+}
+
+class MyDictionary2 {
+    dictionary: {[key: string]: boolean};
+    wildcard: string;
+
+    constructor(words: string[], wildcard: string = "*") {
+        this.wildcard = wildcard;
+        const wordMap = words.reduce((acc: {[key: string]: boolean}, word) => {
+            acc[word] = true;
+            words.forEach((_dictWord, i) => {
+                const start = word.slice(0, i)
+                const end = word.slice(i + 1)
+
+                const partialWord = `${start}${this.wildcard}${end}`;
+                acc[partialWord] = true;
+            } );
+            return acc;
+        }, {});
+
+        this.dictionary = wordMap;
+    }
+
+    isInDict(word: string): boolean {
+        return !!this.dictionary[word];
+    }
+}
+
+const myDict = new MyDictionary2(["cat", "car", "bar"]);
 console.log(myDict.isInDict("cat")); // Output: true
 console.log(myDict.isInDict("bat")); // Output: false
+console.log(myDict.isInDict("c*t")); // Output: true
+console.log(myDict.isInDict("ca*")); // Output: true
+console.log(myDict.isInDict("b*t")); // Output: false */
+// Question 36: Write a function that returns the reverse of a string
+/* function reverseString(input: string): string {
+    return input.split('').reverse().join('');
+}
+
+function reverseString2(input: string): string {
+    let reversedString = '';
+    for(let i = input.length - 1; i >= 0; i--) {
+        reversedString += input[i];
+    }
+    return reversedString;
+}
+
+function reverseString3(input: string): string {
+    return input.split('').reduce((acc, char) => char + acc, '');
+} */
+// Question 37 : Write a function that returns the longest word in a sentence
+/* function longestString(sentence: string): string {
+    const words = sentence.split(' ');
+    return words.reduce((longestWord, currentWord) => currentWord.length > longestWord.length ? currentWord : longestWord, '');
+}
+
+console.log(longestString('The quick brown fox jumps over the lazy dog')); // Output: 'quick'
+ */
+// Question 38: Write a function that checks if a word is a palindrome
+/* const isPalindrome = (word: string): boolean => {
+    const reversedWord = word.split('').reverse().join('');
+    return word === reversedWord;
+} */
+// Question 39: Write a function that removes duplicates from an array
+/* function removeDuplicates(arr: any[]): any[] {
+    return [...new Set(arr)]; // Array.from(new Set(arr))
+}
+
+console.log(removeDuplicates([1, 2, 2, 3, 4, 4, 5])); // Output: [1, 2, 3, 4, 5] */
+// Question 40: Check if two strings are anagrams
+/* function isAnagram(str1: string, str2: string): boolean {
+    return str1.split('').sort().join('') === str2.split('').sort().join('');
+}
+
+console.log(isAnagram('listen', 'silent')); // Output: true
+console.log(isAnagram('hello', 'world')); // Output: false */
+// Question 41: Write a function that returns the number of vowels in a string
+/* function countVowels(str: string): number {
+    const vowels = 'aeiou';
+    return str.split('').filter(char => vowels.includes(char.toLowerCase())).length;
+} */
+// Question 42: Write a function that returns largest number in an array
+/* function largestNumber(arr: number[]): number {
+    return Math.max(...arr);
+}
+
+function largestNumber2(arr: number[]): number {
+    return arr.reduce((max, num) => num > max ? num : max, arr[0]);
+}
+
+function largestNumber3(arr: number[]): number {
+    let max = arr[0];
+    for(const num of arr) {
+        if(num > max) {
+            max = num;
+        }
+    }
+    return max;
+} */
+// Question 43: Write a function that checks if number is prime
+/* function isPrime(num: number): boolean {
+    if(num <= 1) {
+        return false;
+    }
+    for(let i = 2; i <= Math.sqrt(num); i++) {
+        if(num % i === 0) {
+            return false;
+        }
+    }
+    return true;
+} */
+// example of isPrime
+// console.log(isPrime(2)); // Output: true
+// console.log(isPrime(4)); // Output: false
+// console.log(isPrime(11)); // Output: true
+// console.log(isPrime(15)); // Output: false
+// console.log(isPrime(3)); // Output: true
+// Question 44: Write a function that returns the factorial of a number
+/* function factorial(num: number): number {
+    if(num === 0) {
+        return 1;
+    }
+    return num * factorial(num - 1);
+}
+
+function factorial2(num: number): number {
+    let result = 1;
+    for(let i = 1; i <= num; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+function factorial3(num: number): number {
+    return Array.from({length: num}, (_, i) => i + 1).reduce((acc, val) => acc * val, 1);
+} */
+// Write a function that returns the nth Fibonacci number
+/* function fibonacci(n: number): number {
+    if(n <= 1) {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// Question 46: Write a function that removes all the white spaces from a string
+
+*/
+/*
+const removeWhiteSpace = (str: string): string => str.replace(/\s/g, '');
+const removeWhiteSpace2 = (str: string): string => str.split(' ').join(''); */
+// Question 47: What is webpack?
+// Webpack is a module bundler for JavaScript applications that processes and bundles assets like JavaScript, CSS, and images.
+// It allows developers to define dependencies between modules and generate a single bundle that can be loaded by the browser.
+// Webpack uses a configuration file to define entry points, output paths, loaders, and plugins for processing different types of assets.
+// Webpack is commonly used in modern web development to optimize and bundle assets for production deployment.
+// It supports features like code splitting, hot module replacement, and tree shaking to improve performance and reduce bundle size.
+// Tree shaking is a technique used to eliminate dead code from the final bundle by removing unused modules and functions.
+// Webpack is often used in conjunction with other tools like Babel, ESLint, and PostCSS to provide a complete build pipeline for web applications.
+// Webpack is highly configurable and can be customized to fit the specific needs of a project.
+// You can do tree shaking with webpack by setting mode to production and using ES6 modules.
+// Webpack will automatically remove unused code during the build process.
+// You can also use tools like babel to transpile code to ES6 modules and enable tree shaking.
+// Webpack also supports plugins like UglifyJSPlugin and TerserPlugin to minify and optimize the final bundle.
+// Webpment.ack is commonly used in modern web development to bundle and optimize assets for production deployment.
+// Webpack can not tree shake code that is not written in ES6 modules. Meaning that if you are using CommonJS or AMD modules, webpack will not be able to tree shake the code.
+// common js modules are not tree shakeable because they are not statically analyzable.
+// Meaning that the dependencies are not known until runtime.
+// Question 48: What is Babel?
+// Babel is a JavaScript compiler that transforms modern JavaScript code into backward-compatible versions that can run in older browsers.
+// It allows developers to use the latest JavaScript features like arrow functions, template literals, and destructuring in their code.
+// Question 49: What is a dependecy graph in webpack?
+// A dependency graph is a representation of the relationships between modules in a JavaScript application.
+// Webpack uses a dependency graph to determine the dependencies between modules and generate a bundle that includes all the required modules.
+// The dependency graph is created based on the import and export statements in the code, which define the relationships between modules.
+// Webpack analyzes the code to build a dependency graph and resolve the dependencies between modules.
+// The dependency graph helps webpack optimize the build process by only including the necessary modules in the final bundle.
+// Question 50: What is css and js?
+// CSS (Cascading Style Sheets) is a style sheet language used to define the visual presentation of a web page.
+// It is used to style HTML elements and control the layout, colors, fonts, and other visual aspects of a website.
+// CSS can be applied to HTML elements using inline styles, internal styles, or external stylesheets.
+// In js (JavaScript) is a programming language used to create interactive and dynamic web pages.
+// We can dinamically change the content of the page, add interactivity, validate forms, and much more.
+// We can change css in js by using the style property of an element or by adding/removing classes.
+// Example of changing css in js:
+/* const element = document.getElementById('myElement');
+element.style.color = 'red';
+element.style.fontSize = '20px';
+element.classList.add('highlight'); */
+// A disadvantage of changing css in js is that it can lead to a mix of concerns and make the code harder to maintain. 
+// It is recommended to separate the concerns by using css for styling and js for functionality.
+// Caching css in js can also lead to performance issues, as the browser needs to re-render the page when the css changes.
+// Question 51: Algo question
+// const questions = [{id: 1, category: "html"}, {id: 2, category: "html"}, {id: 3, category: "css"}, {id: 4, category: "css"}]
+/* const mapQuestionsByCategory = (questions) => {
+    return questions.reduce((acc, question) => {
+        if(!acc[question.category]) {
+            acc[question.category] = [];
+        }
+        acc[question.category].push(question);
+        return acc;
+    }, {});
+}
+
+console.log(mapQuestionsByCategory(questions)); // Output: {html: [{id: 1, category: "html"}, {id: 2, category: "html"}], css: [{id: 3, category: "css"}, {id: 4, category: "css"}]} */
+// Question 52: Write a function which stores inside a secret word which cannot be changed or accessed from outside
+/* function secretWord() {
+    const secret = 'password';
+    return {
+        getSecret: () => secret
+    }
+}
+
+const secret = secretWord();
+console.log(secret.getSecret()); // Output: 'password'
+ */
+// Question 53: How can I clone an object in JavaScript?
+// You can clone an object in JavaScript using the spread operator, Object.assign(), or JSON.parse() and JSON.stringify().
+// The spread operator (...) creates a shallow copy of an object by copying its own enumerable properties.
+// Object.assign() copies the enumerable own properties of one or more source objects to a target object.
+// JSON.parse() and JSON.stringify() can be used to create a deep copy of an object by serializing and deserializing it.
+// Example:
+/*
+const obj = {name: 'John', age: 30, address: {city: 'New York'}};
+const clone1 = {...obj};
+
+const clone2 = Object.assign({}, obj);
+
+const clone3 = JSON.parse(JSON.stringify(obj));
+
+console.log(clone1); // Output: {name: 'John', age: 30}
+console.log(clone2); // Output: {name: 'John', age: 30}
+console.log(clone3); // Output: {name: 'John', age: 30}
+
+console.log(obj === clone1); // Output: false
+console.log(obj === clone2); // Output: false
+console.log(obj === clone3); // Output: false
+
+console.log(obj.address === clone1.address); // Output: true, because it's a shallow copy
+console.log(obj.address === clone2.address); // Output: true, because it's a shallow copy
+console.log(obj.address === clone3.address); // Output: false, because it's a deep copy
+
+clone1.name = 'Jane';
+console.log(obj.name); // Output: 'John', because it's a shallow copy
+clone1.address.city = 'San Francisco';
+console.log(obj.address.city); // Output: 'San Francisco', because it's a shallow copy
+clone2.name = 'Jane';
+console.log(obj.name); // Output: 'John', because it's a shallow copy
+clone2.address.city = 'Other stuff';
+console.log(obj.address.city); // Output: 'Other stuff', because it's a shallow copy
+clone3.address.city = 'Los Angeles';
+console.log(obj.address.city); // Output: 'San Francisco', because it's a deep copy
+*/
+// Shallow copy means that only the top-level properties of the object are copied, while the nested properties are still references to the original object.
+// Deep copy means that all properties of the object, including nested properties, are copied to create a new object with no references to the original object.
+/* let obj = {name: 'John', age: 30, address: {city: 'New York'}};
+let foo = obj; // foo is a reference to obj. If you change foo, obj will also change.
+
+ */
+/* function countVowls = (str) => {
+    const vowels = ['a', 'e', 'i', 'o', 'u'];
+    let count = 0;
+    for(const char of str.toLowerCase()) {
+        if(vowels.includes(char)) {
+            count++;
+        }
+    }
+    return count;
+}
+
+function countVowls2 = (str) => {
+    const vowels = ['a', 'e', 'i', 'o', 'u'];
+    return str.toLowerCase().split('').filter(char => vowels.includes(char)).length;
+}
+
+function countVowls3 = (str) => {
+    return (str.match(/[aeiou]/gi) || []).length;
+}
+
+function countVowls4 = (str) => {
+    return str.replace(/[^aeiou]/gi, '').length;
+}
+
+function countVowls5 = (str) => {
+    return str.split('').reduce((count, char) => 'aeiou'.includes(char.toLowerCase()) ? count + 1 : count, 0);
+} */
+// Question 55: Reverse each word in a sentence
+/* function custonReverseWords(sentence: string): string {
+    return sentence.split(' ').reverse().join(' ');
+}
+
+console.log(custonReverseWords('The quick brown fox')); // Output: 'fox brown quick The'
+
+function custonReverseWords2(sentence: string): string {
+    return sentence.split(' ').reduceRight((acc, word) => acc + " " + word, '').trim();
+}
+
+console.log(custonReverseWords2('The quick brown fox')); // Output: 'fox brown quick The' */
+/* function findMostCommonWord(words: string[]): string {
+    const wordDict = words.reduce((acc: { [key: string]: number }, word) => {
+        acc[word] = acc[word] ? acc[word] + 1 : 1;
+        return acc
+    }, {})
+
+    let mostCommonWordLength = 0
+    let mostCommonWord = ''
+    
+    for(const [word, value] of Object.entries(wordDict) as [string, number][]){
+        if(value > mostCommonWordLength) {
+            mostCommonWord = word
+            mostCommonWordLength = value
+        }
+    }
+
+    return mostCommonWord
+} */
+/*
+function findMostCommonWord2(words: string[]): string {
+    const wordDict = words.reduce((acc: { [key: string]: number }, word) => {
+        acc[word] = acc[word] ? acc[word] + 1 : 1;
+        return acc
+    }, {})
+
+    const entries = Object.entries(wordDict) as [string, number][]
+    return entries.reduce((mostCommonWord, [word, value]) => value > mostCommonWord[1] ? [word, value] : mostCommonWord, ['', 0])[0]
+}
+
+console.log(findMostCommonWord(['apple', 'banana', 'apple', 'cherry', 'banana', 'apple'])); // Output: 'apple' */
+// Question 57: Sort an array of numbers in ascending order
+/* function sortNumbers(arr: number[]): number[] {
+    return arr.sort((a, b) => a - b); // Ascending order because a - b is negative
+}
+*/
+// Question 58: What's the output?
+/* let obj1 = {a: 1, b: {c: 2}}
+let obj2 = {...obj1}
+let obj3 = JSON.parse(JSON.stringify(obj1))
+
+console.log(obj1 === obj2) // Output: false, because obj2 is a shallow copy of obj1, so they are not the same object
+console.log(obj1 === obj3) // Output: false, because obj3 is a deep copy of obj1, so they are not the same object
+console.log(obj1.b === obj2.b) // Output: true, because obj2 is a shallow copy, so the nested object is the same reference
+ */
+// Question 59: What's the output to fill an array?
+/* const arr = new Array(5).fill(0);
+const arr2 = Array.from({length: 5}, () => 0);
+console.log(arr); // Output: [0, 0, 0, 0, 0]
+console.log(arr2); // Output: [0, 0, 0, 0, 0]
+ */
+// Question 60: Check if array has duplicates
+/* function hasDuplicates(arr: any[]): boolean {
+    return new Set(arr).size !== arr.length;
+}
+
+// Check which elements are duplicated
+function findDuplicates(arr: any[]): any[] {
+    return arr.filter((item, index) => arr.indexOf(item) !== index);
+}
+*/
+// Question 61: Replace values
+/* let a = 5
+let b = 10
+let temp = a
+a = b
+b = temp
+
+console.log(a, b) // Output: 10, 5
+
+let x = 5
+let y = 10
+[x, y] = [y, x]
+console.log(x, y) // Output: 10, 5
+
+let m = 5
+let n = 10
+n = m
+m = n
+console.log(m, n) // Output: 5, 5
+ */
+// Exercise 62: Write code to get array of names from given array of users
+/*
+const users = [
+    {
+        id: 1,
+        name: 'John Doe',
+        isActive: true,
+        age: 20,
+    },
+    {
+        id: 2,
+        name: 'Jane Doe',
+        isActive: false,
+        age: 24
+    },
+    {
+        id: 3,
+        name: 'Alice Smith',
+        isActive: true,
+        age: 19
+    }
+]
+
+const activeUserNames = users.filter(user => user.isActive).sort((a, b) => b.age - a.age).map(user => user.name)
+console.log(activeUserNames) */
+// Exercise 63 Write the output of the logs
+/* let var1
+console.log(var1) // Output is undefined
+console.log(typeof var1) // Output is undefined
+
+let var2 = null
+console.log(var2) // Output is null
+console.log(typeof var2) // object */
+// Exercise 64: Write the Output
+/* console.log(foo) // Output: ReferenceError: Cannot access 'foo' before initialization
+foo = 1 */
+/* console.log(foo) // Output is undefined
+var foot = 2 */
+/* foo = 3
+console.log(foo) // Output is 3
+var foo; // Hoisting moves the declaration to the top of the scope and then this is ignored in the execution phase
+console.log(foo) // Output is 3 */
+foo();
+function foo() {
+    console.log('log from inside the function');
+}

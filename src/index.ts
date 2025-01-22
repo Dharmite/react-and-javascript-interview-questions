@@ -1194,3 +1194,254 @@ n = m
 m = n
 console.log(m, n) // Output: 5, 5
  */
+
+// Exercise 62: Write code to get array of names from given array of users
+/* 
+const users = [
+    {
+        id: 1,
+        name: 'John Doe',
+        isActive: true,
+        age: 20,
+    },
+    {
+        id: 2,
+        name: 'Jane Doe',
+        isActive: false, 
+        age: 24
+    },
+    {
+        id: 3,
+        name: 'Alice Smith',
+        isActive: true,
+        age: 19
+    }
+]
+
+const activeUserNames = users.filter(user => user.isActive).sort((a, b) => b.age - a.age).map(user => user.name)
+console.log(activeUserNames) */
+
+// Exercise 63 Write the output of the logs
+
+/* let var1
+console.log(var1) // Output is undefined
+console.log(typeof var1) // Output is undefined
+
+let var2 = null
+console.log(var2) // Output is null
+console.log(typeof var2) // object */
+
+// Exercise 64: Write the Output
+/* console.log(foo) // Output: ReferenceError: Cannot access 'foo' before initialization
+foo = 1 */
+
+/* console.log(foo) // Output is undefined
+var foot = 2 */
+
+/* foo = 3
+console.log(foo) // Output is 3
+var foo; // Hoisting moves the declaration to the top of the scope and then this is ignored in the execution phase
+console.log(foo) // Output is 3 */
+
+/* foo() // Output: log from inside the function
+function foo() {
+    console.log('log from inside the function')
+} */
+
+// Exercise 65
+// This is a case of closure, meaning, the inner function has access to the outer function's variables
+/* function counter() {
+    let counter = 0 // this is a private variable that is not accessible from outside the function
+    
+    function increment(val = 1) {
+        counter += val
+    }
+
+    function getValue() {
+        return counter
+    }
+
+    return {
+        increment, 
+        getValue
+    }
+}
+
+const myCounter = counter()
+console.log(myCounter.getValue()) // Output: 0
+console.log(myCounter.increment()) // Output: 0
+console.log(myCounter.getValue()) // Output: 1
+console.log(myCounter.increment()) // Output: 1
+console.log(myCounter.getValue()) // Output: 2
+ */
+
+function multiply(a) {
+    return (b) => {
+        return a * b
+    }
+}
+
+const multiplyByFive = multiply(5)
+const result = multiplyByFive(3)
+console.log(result) // Output is 15 
+
+// Creata a curry function that takes a function and returns a curried version of the function
+// A curried function is a function that takes multiple arguments one at a time
+// Example:
+// const add = (a, b) => a + b
+// const curriedAdd = curry(add)
+// const result = curriedAdd(1)(2)
+// console.log(result) // Output: 3
+
+/* function curry(fn) {
+    return function curried(...args) {
+        if(args.length >= fn.length) {
+            return fn(...args)
+        } else {
+            return function(...args2) {
+                return curried(...args, ...args2)
+            }
+        }
+    }
+}
+
+const add = (a, b) => a + b
+const curriedAdd = curry(add)
+const result = curriedAdd(1)(2)
+console.log(result) // Output: 3 */
+
+// Why we need curry functions: Currying allows us to create reusable functions that can be partially applied with arguments.
+// This can be useful for creating higher-order functions, function composition, and improving code readability.
+// Currying can also help with data transformation and processing by breaking down complex functions into smaller, composable parts.
+// Currying can be used to create functions that are more flexible and easier to work with in functional programming.
+ 
+function curry(fn) {
+    return function curried(...args) {
+        if(args.length >= fn.length) {
+            return fn(...args)
+        } else {
+            return function(...args2) {
+                return curried(...args, ...args2)
+            }
+        }
+    }
+}
+
+/* const getValue = (obj, key) => obj[key]
+const get = curry(getValue)
+console.log(get('id', {id: 1})) // Output: 1
+const getId = get('id')
+console.log(getId({id: 2})) // Output: 2
+
+const mapValues = (fn, values) => values.map(fn)
+const map = curry(mapValues)
+console.log(map(getId, [{id: 1}, {id: 2}])) // Output [1, 2]
+const mapIds = map(getId)
+console.log(mapIds([{id: 1}, {id: 2}])) // Output [1, 2]
+ */
+
+// Exercise 67: Write a function that adds an element to the end of an array
+
+/* function addElement(arr, element) {
+    return [...arr, element] // returns a new array with the element added to the end, it does not mutate the original array
+}
+
+function addElement2(arr, element) {
+    const newArray = [...arr]
+    newArray.push(element) // mutates the new array by adding the element to the end, does not mutate the original array
+    return newArray
+}
+
+function addElement3(arr, element) {
+    return arr.concat(element) // returns a new array with the element added to the end, it does not mutate the original array
+}
+
+function addElement4(arr, element) {
+    arr.push(element) // mutates the original array by adding the element to the end
+    return arr
+} */
+
+// Exercise 68: Write a function that concatenates two arrays
+
+/* function mergeArrays(arr1, arr2) {
+    return [...arr1, ...arr2] // returns a new array with the elements of both arrays concatenated, it does not mutate the original arrays
+} */
+
+// Check if user exists in an array of users
+
+/*
+const users = [
+    {id: 1, name: 'John Doe'},
+    {id: 2, name: 'Jane Doe'},
+    {id: 3, name: 'Alice Smith'}
+]
+
+function userExists(users, name){
+    // Time complexity of this function is O(n) because it iterates through the array of users to check if the user exists
+    // Space complexity is O(1) because it does not use any additional space that grows with the input size
+    return users.some(user => user.name === name) // returns true if the user exists in the array, false otherwise
+}
+
+const userExists2 = (users, name) => users.some(user => user.name === name)
+*/
+
+// Exercise 70: Write a function that removes all duplicates from an array
+
+/* function removeDuplicates(arr) {
+    return Array.from(new Set(arr))
+}
+
+function removeDuplicates2(arr) {
+    return [...new Set(arr)]
+}
+
+function removeDuplicates3(arr) {
+    return arr.filter((item, index) => arr.indexOf(item) === index)
+} 
+
+function removeDuplicates4(arr) {
+    return arr.reduce((acc, item) => {
+        if(!acc.includes(item)) {
+            [...acc, item]
+        }
+        return acc
+    }, [])
+}
+*/
+
+// Exercise 71: Write a function that sorts an array of numbers in ascending order
+
+/* function sortInAscendingOrder(arr) {
+    const newArray = [...arr]
+    return newArray.sort((a, b) => a - b) // returns a new array with the numbers sorted in ascending order, it does not mutate the original array
+}
+ */
+
+// Exercise 72: Write a function that sorts by author last name
+
+const authors = [
+    {name: 'John Doe', books: ['Book1', 'Book2']},
+    {name: 'Jane Smith', books: ['Book3', 'Book4']},
+    {name: 'Alice Johnson', books: ['Book5', 'Book6']}
+]
+
+function sortByLastName(authors) {
+    const sortedAuthors = [...authors]
+    return sortedAuthors.sort((a, b) => {
+        const [aLastName] = a.name.split(' ').reverse()
+        const [bLastName] = b.name.split(' ').reverse()
+
+        // Other way to get last name is 
+        // const aLastName = a.name.split(' ').pop()
+        // const bLastName = b.name.split(' ').pop()
+
+        // Other way to get last name is
+        // const aLastName = a.name.split(' ').slice(-1)[0]
+        // const bLastName = b.name.split(' ').slice(-1)[0]
+
+        return aLastName.localeCompare(bLastName) // localeCompare compares strings based on their Unicode code points
+    })
+}
+
+console.log(sortByLastName(authors)) // Output: [{name: 'John Doe', books: ['Book1', 'Book2']}, {name: 'Alice Johnson', books: ['Book5', 'Book6']}, {name: 'Jane Smith', books: ['Book3', 'Book4']}]
+
