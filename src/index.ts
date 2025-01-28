@@ -1418,7 +1418,7 @@ function removeDuplicates4(arr) {
  */
 
 // Exercise 72: Write a function that sorts by author last name
-
+/* 
 const authors = [
     {name: 'John Doe', books: ['Book1', 'Book2']},
     {name: 'Jane Smith', books: ['Book3', 'Book4']},
@@ -1445,3 +1445,242 @@ function sortByLastName(authors) {
 
 console.log(sortByLastName(authors)) // Output: [{name: 'John Doe', books: ['Book1', 'Book2']}, {name: 'Alice Johnson', books: ['Book5', 'Book6']}, {name: 'Jane Smith', books: ['Book3', 'Book4']}]
 
+ */
+
+// Exercise 73: Write a function that reverses a string
+
+/* function reverseString(str) {
+    return str.split('').reduceRight((acc, char) => acc + char, '') // returns a new string with the characters reversed, it does not mutate the original string
+} */
+
+// Exercise 74: Sum of all elements in array
+
+/* function sumArray(arr) {
+    return arr.reduce((acc, num) => acc + num, 0) // returns the sum of all elements in the array
+}
+
+ */
+
+// Exercise 75: Fizzbuzz
+
+/* function fizzBuzz(n) {
+    for (let i = 1; i <= n; i++) {
+        if (i % 3 === 0 && i % 5 === 0) console.log("FizzBuzz");
+        else if (i % 3 === 0) console.log("Fizz");
+        else if (i % 5 === 0) console.log("Buzz");
+        else console.log(i);
+    }
+}
+ */
+
+// Exercise 76: Palindrome check
+
+/* function palindromeCheck(str) {
+    const reversedStr = str.split('').reverse().join('')
+    return str === reversedStr
+} 
+*/
+
+// Exercise 77: Find the largest number
+
+/* function findLargestNumber(arr) {
+    return Math.max(...arr)
+}
+
+ */
+
+// Exercise 78: Count vowels
+
+// In the regex, g means global, i means case insensitive
+// match means that it will return an array of all the matches
+/* function countVowels(str) {
+    return str.match(/[aeiou]/gi).length
+}
+
+function countVowels2(str) {
+    const vowels = 'aeiou'
+    return str.split('').filter(char => vowels.includes(char.toLowerCase())).length
+}
+ */
+
+// Exercise 79: Find the longest word in a sentence
+
+/* function longestWord(sentence) {
+    return sentence.split(' ').reduce((longest, current) => current.length > longest.length ? current : longest, '')
+} */
+
+// Exercise 80: Check if two strings are anagrams
+
+// Multiple choice questions - answers
+// console.log(typeof null) // Output: object
+// let has a block scope, var has a function scope
+
+// .push adds an element to the end of an array
+// .pop removes the last element of an array
+// .shift removes the first element of an array
+// .unshift adds an element to the beginning of an array
+// console.log(2 + '2') // Output: '22'
+// console.log(2 - '2') // Output: 0
+// console.log(2 * '2') // Output: 4
+// console.log(2 / '2') // Output: 1
+// console.log('2' + 2) // Output: '22'
+// console.log('2' - 1) // Output: 1
+// console.log('2' + 1) // Output: '21'
+
+// Exercise 81: Write output of the following code
+
+/* let x = 10
+{
+    let x = 20
+    console.log(x) // Output: 20
+}
+console.log(x) // Output: 10
+ */
+
+// Exercise 82: flatten nested array
+
+/* 
+
+function flattenArray(arr) {
+    return arr.reduce((acc, value) => Array.isArray(value) ? acc.concat(flattenArray(value)) : acc.concat(value), [])
+}
+
+function flatternArray2(arr) {
+    return arr.flat(Infinity)
+}
+    
+ */
+
+// Exercise 83: Check if a number is prime
+
+/* function isPrime(num) {
+    if(num <= 1) return false
+    for(let i = 2; i <= Math.sqrt(num); i++) {
+        if(num % i === 0) return false
+    }
+    return true
+}
+ */
+
+// Exercise 84: Capitalize the first letter of each word in a sentence
+
+/* function capitalizeWords(sentence) {
+    return sentence.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+}
+ */
+
+// Exercise 85: Write a function that returns the factorial of a number
+
+/* function factorial(num) {
+    if(num === 0) return 1
+    return num * factorial(num - 1)
+}
+ */
+
+// Exercise 86: Write a function that check if two strings are anagrams
+/* function checkAnagrams(str1, str2) {
+    if(str1.length !== str2.length) return false
+    const normalise = (str) => str.toLowerCase().split('').sort().join(''); // Normalizes the string by converting it to lowercase, splitting it into an array of characters, sorting the characters, and joining them back into a string
+    return normalise(str1) === normalise(str2)
+}
+ */
+
+// Exercise 87: Write a function that counts the occurrences of an array of elements
+
+/* function countOccurrences(arr: any[]) {
+    return arr.reduce((acc, value) => {
+        acc[value] = acc[value] ? (acc[value] || 0) + 1 : 1
+        return acc
+    }, {})
+}
+ */
+
+// Exercise 88: Write a function that returns the nth Fibonacci number
+
+/* function fibonacci(n) {
+    if(n <= 1) return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+}
+ */
+
+// Exercise 89: Write a function that returns the fibonacci sequence up to n
+
+/* function fibonacci(n) {
+    if(n <= 1) return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+}
+
+function generateFibonacciSq(n) {
+    if(n === 0) return []
+    if (n === 1) return [0, 1]
+    const sequence = [0, 1]
+    for(let i = 2; i <= n; i++) {
+        sequence.push(fibonacci(i))
+    }
+
+    return sequence
+} */
+
+/* let x = 0
+x = x || 5
+console.log(x) // Output is 5
+ */
+/* 
+let x = 0
+x = x ?? 10
+console.log(x) // Output is 0 */
+
+/* console.log(1 == '1') // Output is true
+console.log(1 === '1') // Output is false
+ */
+
+// JSON.stringify converts an object to a string
+// console.log(typeof NaN) // Output is number because NaN is a number
+
+// this in javascript refers to the object that is executing the current function
+// this in a global context refers to the window object
+// this in a function refers to the object that calls the function
+
+// Example of this in a function
+/* const person = {
+    name: 'John',
+    greet() {
+        console.log(`Hello, my name is ${this.name}`)
+    }
+}
+
+person.greet() // Output: Hello, my name is John
+ */
+
+// Example of this in a global context
+
+/* console.log(this) // Output: window object
+
+function greet() {
+    console.log(`Hello, my name is ${this.name}`)
+}
+
+greet() // Output: Hello, my name is undefined
+ */
+
+// Example of this in an object
+
+/* const person = {
+    name: 'John',
+    greet() {
+        console.log(`Hello, my name is ${this.name}`)
+    }
+}
+
+const person2 = {
+    name: 'Jane',
+    greet: person.greet
+}
+
+person2.greet() // Output: Hello, my name is Jane
+ */
+
+// == compares only value, while === compares both value and type
+/* 
+let x;
+console.log(x + 2); // Output: NaN */
